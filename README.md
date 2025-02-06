@@ -1,38 +1,67 @@
 <div align="center"> 
-  <img src="LiricsFinder_logo.webp" alt="Logo LiricsFinder" width="200" height="200"/>
+  <img src="LiricsFinder_logo.webp" alt="LiricsFinder Logo" width="200" height="200"/>
 </div>
 
 <h1 align="center">LiricsFinder</h1>
 
-# 🎵 Lyrics Finder: NLP & BERT per l'Analisi dei Testi Musicali
+# 🎵 Lyrics Finder: NLP & BERT for Music Lyrics Analysis
 
-## 📌 Descrizione del Progetto
+## 📌 Project Description
 
-Lyrics Finder è un sistema di classificazione automatica dei generi musicali basato sull'analisi testuale delle canzoni, utilizzando tecniche avanzate di **Natural Language Processing (NLP)** e il modello **BERT**.
+Lyrics Finder is an automatic music genre classification system based on the textual analysis of song lyrics, using advanced **Natural Language Processing (NLP)** techniques and the **BERT** model.
 
-L'idea nasce dalla necessità di categorizzare automaticamente i brani in base al loro testo, senza dover ricorrere a metadati o informazioni aggiuntive. Questo approccio può avere applicazioni in ambiti come la creazione di playlist personalizzate, l'analisi tematica e la scoperta musicale.
+The idea arose from the need to automatically categorize songs based on their lyrics, without relying on metadata or additional information. This approach has applications in areas such as personalized playlist creation, thematic analysis, and music discovery.
 
-Tuttavia, analizzare testi musicali non è un compito semplice: l'uso di metafore, giochi di parole e linguaggio informale rende difficile per i modelli tradizionali ottenere risultati accurati. Per questo motivo, abbiamo scelto **BERT**, un modello avanzato di deep learning capace di comprendere il contesto in modo bidirezionale.
+However, analyzing music lyrics is not a simple task: the use of metaphors, wordplay, and informal language makes it difficult for traditional models to achieve accurate results. For this reason, we chose **BERT**, an advanced deep learning model capable of understanding context in a bidirectional manner.
+
+---
+
+## 📂 Project Structure
+
+The project is organized into the following folders:
+
+### 📁 `notebooks/`
+
+This folder contains executable scripts for **Google Colab**, developed to experiment with various stages of the pipeline:
+
+- **`data_augmentation.ipynb`**: Pipeline with **data augmentation** techniques.
+- **`first_pipeline.ipynb`**: Initial pipeline developed **without data augmentation** or optimization.
+- **`optimization.ipynb`**: **Optimized pipeline** to improve model performance.
+
+### 📁 `src/`
+
+This folder contains the **final and optimized** version of the pipeline, developed for **local execution**:
+
+- **`cleaning.py`**: Data cleaning script.
+- **`eda.py`**: Exploratory data analysis of the dataset.
+- **`preprocessing.py`**: Transformation and preparation of text for the model.
+- **`modeling.py`**: Model creation and configuration using **BERT**.
+- **`training.py`**: Model training.
+- **`performance_evaluation.py`**: Model performance evaluation.
+- **`pipeline.py`**: Main script that runs the **entire pipeline** sequentially, from data cleaning to final evaluation.
+- **`requirements.txt`**: File with dependencies needed to run the project locally.
+
+Users can choose to **run each stage separately** or start the entire process by executing `pipeline.py`.
 
 ---
 
 ## 📂 Dataset
 
-Il dataset utilizzato contiene le seguenti informazioni:
+The dataset used contains the following information:
 
 - **Index**
-- **Titolo della canzone** 🎵
-- **Anno di pubblicazione** 📅
-- **Artista** 🎤
-- **Genere musicale** 🎼
-- **Testo della canzone** ✍️
+- **Song Title** 🎵
+- **Year of Release** 📅
+- **Artist** 🎤
+- **Music Genre** 🎼
+- **Song Lyrics** ✍️
 
 ### 🔍 Exploratory Data Analysis (EDA)
 
-- **Totale campioni**: 362.237
-- **Generi più rappresentati**: Rock (131.377), Pop (49.444)
-- **Generi meno rappresentati**: Indie (5.732), R&B (5.935), Folk (3.241)
-- **Problema**: squilibrio tra le classi
+- **Total samples**: 362,237
+- **Most represented genres**: Rock (131,377), Pop (49,444)
+- **Least represented genres**: Indie (5,732), R&B (5,935), Folk (3,241)
+- **Problem**: Class imbalance
 
 ---
 
@@ -40,93 +69,136 @@ Il dataset utilizzato contiene le seguenti informazioni:
 
 ### 🧼 1. Cleaning
 
-- Rimozione di dati nulli o non disponibili
-- Eliminazione di punteggiatura e simboli superflui
-- Pulizia dei testi strumentali o corrotti
-- Bilanciamento del dataset tramite **undersampling**
+- Removal of null or missing data
+- Elimination of unnecessary punctuation and symbols
+- Cleaning of instrumental or corrupted texts
+- Dataset balancing via **undersampling**
 
 ### ⚙️ 2. Preprocessing
 
-- Rimozione delle **stop words**
-- **Lemmatizzazione**
-- **Encoding** dei generi
-- **Splittaggio** del dataset
-- **Tokenizzazione**
+- Removal of **stop words**
+- **Lemmatization**
+- **Encoding** of genres
+- **Dataset splitting**
+- **Tokenization**
 
 ### 🤖 3. Modeling
 
-- Utilizzo del modello **BERT pre-addestrato** (**BertForSequenceClassification**, *bert-base-uncased*)
+- Use of the **pre-trained BERT model** (**BertForSequenceClassification**, *bert-base-uncased*)
 
 ### 🚀 4. Training
 
-- **Early Stopping** (2 epoche)
-- **Forward pass** → **Calcolo perdita** → **Backpropagation** → **Aggiornamento pesi**
-- **Interruzione alla 4ª epoca** per evitare overfitting
+- **Early Stopping** (2 epochs)
+- **Forward pass** → **Loss calculation** → **Backpropagation** → **Weight update**
+- **Stop at 4th epoch** to avoid overfitting
 
 ### 📊 5. Performance Evaluation
 
-- **Matrice di Confusione**: buona accuratezza, ma difficoltà nella distinzione tra Rock e Hip-Hop
+- **Confusion Matrix**: good accuracy, but difficulties distinguishing between Rock and Hip-Hop
 - **Classification Report**:
-  - 🎸 **Pop & Metal**: Buoni risultati
-  - 🎤 **Rock & Hip-Hop**: Performance più basse
-- **Accuratezza complessiva**: **71%**
+  - 🎸 **Pop & Metal**: Good results
+  - 🎤 **Rock & Hip-Hop**: Lower performance
+- **Overall accuracy**: **71%**
 
 ---
 
-## 🔥 Ottimizzazione
+## 🔥 Optimization
 
 ### 🛠 Data Augmentation
 
 - **Back Translation**
 - **Synonym Replacement**
-- **Miglioramento dell'accuratezza al 73%**
+- **Improvement in accuracy to 73%**
 
-### 🎯 Ulteriori Tecniche
+### 🎯 Additional Techniques
 
-- **Aumento della lunghezza massima** dei token
-- **Riduzione del learning rate**
+- **Increase of maximum token length**
+- **Lower learning rate**
 - **Dropout**
 - **Focal Loss**
-- **Accuracy finale**: **72%**
+- **Final accuracy**: **72%**
 
 ---
 
-## 🔮 Lavori Futuri
+## 🔮 Future Work
 
-- 📈 **Espansione del dataset**
-- 🖥️ **Utilizzo di hardware più potente**
-- 🔄 **Testare nuove tecniche di data augmentation**
-- 🏆 **Sperimentare altri modelli BERT**
-- 🔧 **Ottimizzazione con hyperparameter tuning**
-
----
-
-## ⚙️ Esecuzione
-
-Lyrics Finder è progettato per essere eseguito in due modalità:
-
-- **💻 Esecuzione locale**: per utenti con **GPU NVIDIA** (RTX 3060, 3070, 3080 o superiori)
-- **☁️ Google Colab**: per chi non dispone di risorse hardware avanzate
+- 📈 **Expand the dataset**
+- 🖥️ **Use more powerful hardware**
+- 🔄 **Test new data augmentation techniques**
+- 🏆 **Experiment with other BERT models**
+- 🔧 **Optimization through hyperparameter tuning**
 
 ---
 
-## 📦 Requisiti
+## ⚙️ Execution
+
+Lyrics Finder is designed to run in two modes:
+
+- **💻 Local Execution**: for users with **NVIDIA GPUs** (RTX 3060, 3070, 3080, or higher)
+- **☁️ Google Colab**: for users without advanced hardware resources
+
+---
+
+## 📦 Requirements
 
 - **Python 3.x** 🐍
 - **PyTorch** 🔥
 - **Transformers** (Hugging Face)
 - **Pandas, NumPy, Scikit-learn**
-- **Google Colab** (opzionale)
+- **Google Colab** (optional)
 
 ---
 
-## 🚀 Come Usare il Progetto
+# 🚀 How to Use the Project
 
-### Clonare il repository:
+## ☁️ On Google Colab
+
+1. **Open the desired notebook**
+   - Upload one of the `.ipynb` files found in the `notebooks/` folder to Google Colab.
+   - For example, open `optimization.ipynb` to run the optimized pipeline.
+
+2. **Connect the runtime to a GPU**
+   - Go to `Runtime → Change runtime type → Select GPU`.
+
+3. **Run the cells sequentially**
+   - Follow the order of the cells to execute the various stages of the pipeline.
+
+## 💻 Locally
+
+1. **Clone the repository**
 ```bash
 git clone https://github.com/tuo-utente/LyricsFinder.git
-cd LyricsFinder
+cd LyricsFinder/src
 ```
+
+2. **Install the dependencies**
+```bash
+pip install -r requirements.txt
+```
+
+3. **Run the full pipeline**
+```bash
+python pipeline.py
+```
+
+4. **Run a specific phase of the pipeline (optional)**
+```bash
+python cleaning.py  # Esegue solo la pulizia dei dati
+python training.py  # Addestra il modello
+```
+
+---
+## License
+This project is licensed under the MIT License. See the LICENSE file for details.
+
+---
+
+## Contributors
+
+- [Zazzarini Micol](https://github.com/MicolZazzarini)
+- [Fiorani Andrea](https://github.com/125ade)
+- [Antonini Antonio](https://github.com/tava99)
+
 
 
 
